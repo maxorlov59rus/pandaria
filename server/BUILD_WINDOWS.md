@@ -6,6 +6,23 @@
 CI-конфиг `.github/workflows/windows-build-release.yml` (windows-2022 + VS2022).
 Ниже — портированный порядок сборки и готовые скрипты.
 
+## 0. Поддержка WIN64 (только 64-битная сборка)
+
+Сборка сервера под Windows поддерживается **исключительно для платформы WIN64 (x64)**:
+
+* `cmake/macros/CheckPlatform.cmake` — при `WIN32` определяет `_WIN64` для всех компиляторов
+  (MSVC определяет его сам, MinGW-w64 — не всегда) и выдаёт `FATAL_ERROR`, если обнаружен
+  32-битный (`Win32`) toolchain;
+* `cmake/platform/win/settings.cmake` — дополнительно определяет макросы `WIN64` и `_WIN64`
+  (совместимость со сторонними заголовками, проверяющими классический `WIN64`);
+* `cmake/compiler/msvc/settings.cmake` — сохраняет `/bigobj` и `-D_WIN64` для x64;
+* версия в логах сервера печатается как `(Win64, little-endian)` — см. `src/server/shared/SystemConfig.h`;
+* `build_windows.bat` — настраивает сборку строго через `-A x64`, автоматически удаляет
+  build-каталог, сконфигурированный ранее под `Win32`, и проверяет наличие 64-битных
+  компонентов OpenSSL (`libcrypto-3-x64.dll` / `libcrypto.lib`) и MySQL SDK.
+
+Все зависимости (Boost, OpenSSL, MySQL/MariaDB Connector) обязаны быть 64-битными (x64).
+
 ## 1. Требования (Windows 10/11 x64)
 
 | Компонент | Версия | Установка |
