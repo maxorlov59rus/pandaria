@@ -22,8 +22,8 @@ server/
 1. Код склонирован в /workspace/src, CMake сконфигурирован в /workspace/build.
 2. Компиляция: `cd /workspace/build && make -j2` (GCC 12.2 ниже рекомендованного 13 — возможны ошибки).
 3. После сборки скопировать бинарники в bin/linux/:
-   `cp build/src/server/{worldserver,authserver} server/bin/linux/`
-   экстракторы: `build/src/tools/{mapextract,vmap_extractor,mmap_generator}`
+   `cp build/server/{worldserver,authserver} server/bin/linux/`
+   экстракторы: `build/tools/{mapextract,vmap_extractor,mmap_generator}`
 4. Извлечь данные из клиента 5.4.8.18945:
    - `./MapExtractor /path/to/WoW` → data/Maps + data/client
    - `./VMapExtractor4 /path/to/WoW data/Maps data/vmaps`
